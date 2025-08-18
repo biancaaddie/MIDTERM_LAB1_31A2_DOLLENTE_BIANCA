@@ -21,12 +21,14 @@ namespace Library_Management.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return View("AddModal", vm); // Re-render the modal with validation errors
             }
 
             BookService.Instance.AddBook(vm);
-            return Ok();
+
+            return RedirectToAction("Index");
         }
+
 
         public IActionResult EditModal(Guid id)
         {
@@ -78,21 +80,30 @@ namespace Library_Management.Controllers
 
             return View(book);
         }
-
-        [HttpPost]
-        public IActionResult AddCopy(Guid id)
+        private readonly BookService _bookService = BookService.Instance;
+        // GET: Show the Add Copy form
+        [HttpGet]
+        public IActionResult AddCopy(Guid bookId)
         {
-            try
+            var vm = new AddBookCopyViewModel
             {
-                BookService.Instance.AddCopy(id);
-                return RedirectToAction("Details", new { id });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                BookId = bookId
+            };
+            return View(vm);
         }
 
+        // POST: Handle form submission
+        [HttpPost]
+        public IActionResult AddCopy(AddBookCopyViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            _bookService.AddBookCopy(vm);
+            return RedirectToAction("Details", new { id = vm.BookId }); // Redirect to book details
+        }
 
     }
 }

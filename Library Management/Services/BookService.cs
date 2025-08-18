@@ -374,6 +374,7 @@ public class BookService
     {
         var book = _books.FirstOrDefault(b => b.Id == id) ?? throw new KeyNotFoundException("Book not found");
         _books.Remove(book);
+
         var author = _authors.FirstOrDefault(a => a.Books.Any(bk => bk.Id == id));
         if (author != null)
         {
@@ -383,12 +384,14 @@ public class BookService
                 _authors.Remove(author);
             }
         }
+
         var bookCopies = _bookCopies.Where(bi => bi.Book.Id == id).ToList();
         foreach (var bookCopy in bookCopies)
         {
             _bookCopies.Remove(bookCopy);
         }
     }
+
 
     // Singleton pattern
     private static BookService? _instance;
@@ -404,22 +407,22 @@ public class BookService
         }
     }
 
-    public void AddCopy(Guid bookId)
+    public void AddBookCopy(AddBookCopyViewModel vm)
     {
-        var book = _books.FirstOrDefault(b => b.Id == bookId);
-        if (book == null)
-            throw new KeyNotFoundException("Book not found.");
+        if (vm == null) throw new ArgumentNullException(nameof(vm));
 
-        var coverImage = _bookCopies.FirstOrDefault(bc => bc.Book.Id == bookId)?.CoverImageUrl;
+        // Find the book
+        var book = _books.FirstOrDefault(b => b.Id == vm.BookId)
+            ?? throw new KeyNotFoundException("Book not found.");
 
         var newCopy = new BookCopy
         {
             Id = Guid.NewGuid(),
             Book = book,
-            AddedDate = DateTime.Now,
-            Condition = "New",
-            Source = "Manual Add",
-            CoverImageUrl = coverImage
+            CoverImageUrl = vm.CoverImageUrl,
+            Condition = vm.Condition,
+            Source = vm.Source,
+            AddedDate = DateTime.Now
         };
 
         _bookCopies.Add(newCopy);

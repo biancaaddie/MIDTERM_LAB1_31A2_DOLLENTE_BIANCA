@@ -1,0 +1,53 @@
+﻿@model AddBookCopyViewModel
+
+<!-- Button to trigger modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCopyModal">
+    <i class="bi bi-plus-circle"></i> Add Copy
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addCopyModal" tabindex="-1" aria-labelledby="addCopyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="AddCopy" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCopyModalLabel">Add Book Copy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" asp-for="BookId" />
+
+                    <div class="form-group mb-3">
+                        <label asp-for="CoverImageUrl" class="form-label"></label>
+                        <input class="form-control" asp-for="CoverImageUrl" />
+                        <span asp-validation-for="CoverImageUrl" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Condition" class="form-label"></label>
+                        <input class="form-control" asp-for="Condition" />
+                        <span asp-validation-for="Condition" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Source" class="form-label"></label>
+                        <input class="form-control" asp-for="Source" />
+                        <span asp-validation-for="Source" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save Copy</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

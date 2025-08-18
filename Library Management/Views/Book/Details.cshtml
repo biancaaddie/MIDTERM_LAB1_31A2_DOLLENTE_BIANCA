@@ -2,7 +2,7 @@
 
 <div class="modal-header bg-primary text-white">
     <h5 class="modal-title">@Model.Title</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <button type="button" class="btn-close" onclick="goBackOrRedirect()" aria-label="Close"></button>
 </div>
 
 <div class="modal-body">
@@ -52,15 +52,61 @@
 </div>
 
 <div class="modal-footer">
-    <a asp-action="Index" class="btn btn-outline-primary">
+    <!-- Close goes back -->
+    <button type="button" class="btn btn-outline-primary" onclick="goBackOrRedirect()">
         <i class="bi bi-arrow-left"></i> Close
-    </a>
+    </button>
 
-    <!-- Add Copies Form -->
-    <form asp-action="AddCopy" asp-controller="Book" method="post">
-        <input type="hidden" name="id" value="@Model.BookId" />
-        <button type="submit" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Add Copy
-        </button>
-    </form>
+    <!-- Open Add Copy Modal -->
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCopyModal">
+        <i class="bi bi-plus-circle"></i> Add Copy
+    </button>
 </div>
+
+<!-- Add Copy Modal -->
+<div class="modal fade" id="addCopyModal" tabindex="-1" aria-labelledby="addCopyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddCopy" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCopyModalLabel">Add Book Copy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="BookId" value="@Model.BookId" />
+
+                    <div class="form-group mb-3">
+                        <label for="CoverImageUrl">Cover Image URL</label>
+                        <input class="form-control" id="CoverImageUrl" name="CoverImageUrl" required />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="Condition">Condition</label>
+                        <input class="form-control" id="Condition" name="Condition" required />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="Source">Source</label>
+                        <input class="form-control" id="Source" name="Source" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save Copy</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function goBackOrRedirect() {
+            if (document.referrer && document.referrer !== window.location.href) {
+                history.back();
+            } else {
+                window.location.href = '@Url.Action("Index", "Book")';
+            }
+        }
+    </script>
+}
