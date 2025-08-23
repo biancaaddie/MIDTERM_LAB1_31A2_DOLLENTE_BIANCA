@@ -1,0 +1,159 @@
+@model IEnumerable<Library_Management.Models.AuthorListViewModel>
+
+@{
+    ViewData["Title"] = "Authors";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Authors</h2>
+                <div>
+                    <a href="@Url.Action("Archive", "Author")" class="btn btn-outline-secondary me-2">
+                        <i class="bi bi-archive"></i> View Archive
+                    </a>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAuthorModal">
+                        <i class="bi bi-plus-circle"></i> Add New Author
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-person-x display-1 text-muted"></i>
+                <h4 class="mt-3 text-muted">No authors found</h4>
+                <p class="text-muted">Start by adding your first author to the library.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var author in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                @if (!string.IsNullOrEmpty(author.ProfileImageUrl))
+                                {
+                                    <img src="@author.ProfileImageUrl" alt="@author.Name"
+                                         class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                         style="width: 60px; height: 60px;">
+                                        <i class="bi bi-person-fill text-white"></i>
+                                    </div>
+                                }
+                                <div class="flex-grow-1">
+                                    <h5 class="card-title mb-1">@author.Name</h5>
+                                    <small class="text-muted">@author.BookCount book(s)</small>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(author.Biography))
+                            {
+                                <p class="card-text text-muted small">
+                                    @(author.Biography.Length > 120 ? author.Biography.Substring(0, 120) + "..." : author.Biography)
+                                </p>
+                            }
+
+                            @if (author.BirthDate.HasValue)
+                            {
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        <i class="bi bi-calendar3"></i> Born: @author.BirthDate.Value.ToString("MMMM dd, yyyy")
+                                    </small>
+                                </p>
+                            }
+                        </div>
+                        
+                        <div class="card-footer bg-transparent">
+                            <div class="btn-group w-100" role="group">
+                                <a href="@Url.Action("Details", new { id = author.AuthorId })" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                                <button class="btn btn-outline-warning btn-sm" onclick="editAuthor('@author.AuthorId')">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="archiveAuthor('@author.AuthorId')">
+                                    <i class="bi bi-archive"></i> Archive
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteAuthor('@author.AuthorId')">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- Add Author Modal -->
+<div class="modal fade" id="addAuthorModal" tabindex="-1" aria-labelledby="addAuthorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="addAuthorModalContent">
+            <!-- Content will be loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<!-- Edit Author Modal -->
+<div class="modal fade" id="editAuthorModal" tabindex="-1" aria-labelledby="editAuthorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="editAuthorModalContent">
+            <!-- Content will be loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<!-- Delete Author Modal -->
+<div class="modal fade" id="deleteAuthorModal" tabindex="-1" aria-labelledby="deleteAuthorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="deleteAuthorModalContent">
+            <!-- Content will be loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Load Add Author modal
+            $('#addAuthorModal').on('show.bs.modal', function() {
+                $('#addAuthorModalContent').load('@Url.Action("AddModal")');
+            });
+        });
+
+        function editAuthor(authorId) {
+            $('#editAuthorModalContent').load('@Url.Action("EditModal")?id=' + authorId, function() {
+                $('#editAuthorModal').modal('show');
+            });
+        }
+
+        function archiveAuthor(authorId) {
+            if (confirm('Are you sure you want to archive this author and all their books?')) {
+                $.post('@Url.Action("Archive")', { id: authorId })
+                    .done(function() {
+                        location.reload();
+                    })
+                    .fail(function() {
+                        alert('Error archiving author');
+                    });
+            }
+        }
+
+        function deleteAuthor(authorId) {
+            $('#deleteAuthorModalContent').load('@Url.Action("DeleteModal")?id=' + authorId, function() {
+                $('#deleteAuthorModal').modal('show');
+            });
+        }
+    </script>
+}

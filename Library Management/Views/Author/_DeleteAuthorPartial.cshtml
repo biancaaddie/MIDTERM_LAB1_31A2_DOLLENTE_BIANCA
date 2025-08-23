@@ -1,0 +1,74 @@
+@model Library_Management.Models.AuthorDetailsViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title text-danger">
+        <i class="bi bi-exclamation-triangle"></i> Delete Author
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <div class="alert alert-warning" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <strong>Warning!</strong> This action cannot be undone.
+    </div>
+    
+    <p>Are you sure you want to permanently delete the following author?</p>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                {
+                    <img src="@Model.ProfileImageUrl" alt="@Model.Name" 
+                         class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                }
+                else
+                {
+                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3"
+                         style="width: 60px; height: 60px;">
+                        <i class="bi bi-person-fill text-white"></i>
+                    </div>
+                }
+                <div>
+                    <h6 class="mb-1">@Model.Name</h6>
+                    <small class="text-muted">@Model.Books.Count book(s) in library</small>
+                    @if (Model.BirthDate.HasValue)
+                    {
+                        <br><small class="text-muted">Born: @Model.BirthDate.Value.ToString("MMMM dd, yyyy")</small>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    @if (Model.Books.Any())
+    {
+        <div class="alert alert-info mt-3" role="alert">
+            <i class="bi bi-info-circle"></i>
+            <strong>Note:</strong> Deleting this author will also remove all @Model.Books.Count associated book(s) and their copies from the library.
+        </div>
+    }
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-danger" onclick="confirmDelete('@Model.AuthorId')">
+        <i class="bi bi-trash"></i> Delete Permanently
+    </button>
+</div>
+
+<script>
+    function confirmDelete(authorId) {
+        $.post('@Url.Action("Delete", "Author")', { id: authorId })
+            .done(function(response) {
+                if (response.success) {
+                    $('#deleteAuthorModal').modal('hide');
+                    location.reload();
+                }
+            })
+            .fail(function() {
+                alert('Error deleting author');
+            });
+    }
+</script>

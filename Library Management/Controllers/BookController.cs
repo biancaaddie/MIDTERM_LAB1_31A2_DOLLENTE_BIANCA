@@ -74,10 +74,11 @@ namespace Library_Management.Controllers
 
         public IActionResult Details(Guid id)
         {
-            var book = BookService.Instance.GetBooks().FirstOrDefault(b => b.BookId == id);
+            var book = BookService.Instance.GetBooks(includeArchived: true).FirstOrDefault(b => b.BookId == id);
             if (book == null)
                 return NotFound();
 
+            ViewBag.BookCopies = BookService.Instance.GetBookCopies(id);
             return View(book);
         }
         private readonly BookService _bookService = BookService.Instance;
@@ -103,6 +104,63 @@ namespace Library_Management.Controllers
 
             _bookService.AddBookCopy(vm);
             return RedirectToAction("Details", new { id = vm.BookId }); // Redirect to book details
+        }
+
+        // Archive section
+        public IActionResult Archive()
+        {
+            var archivedBooks = _bookService.GetArchivedBooks();
+            return View(archivedBooks);
+        }
+
+        [HttpPost]
+        public IActionResult ArchiveBook(Guid id)
+        {
+            try
+            {
+                _bookService.ArchiveBook(id, true);
+                return Json(new { success = true });
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult RestoreBook(Guid id)
+        {
+            try
+            {
+                _bookService.ArchiveBook(id, false);
+                return Json(new { success = true });
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        // Pull-out functionality
+        public IActionResult PulloutModal(Guid bookCopyId)
+        {
+            var bookCopy = _bookService.GetBookCopyForPullout(bookCopyId);
+            if (bookCopy == null)
+                return NotFound();
+
+            return PartialView("_PulloutBookCopyPartial", bookCopy);
+        }
+
+        [HttpPost]
+        public IActionResult Pullout(PulloutBookCopyViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_PulloutBookCopyPartial", vm);
+            }
+
+            _bookService.PulloutBookCopy(vm);
+            return Json(new { success = true });
         }
 
     }

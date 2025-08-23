@@ -15,6 +15,7 @@ namespace Library_Management_Domain.Entities
         public string? Description { get; set; } = default!;
         public string? Genre { get;set; } = default!;
         public DateTime? PublishedDate { get; set; } = default!;
+        public bool IsArchived { get; set; } = false;
 
     }
 
@@ -40,6 +41,7 @@ namespace Library_Management_Domain.Entities
         public string? Biography { get; set; } = default!;
         public DateTime? BirthDate { get; set; } = default!;
         public string? ProfileImageUrl { get; set; } = default!;
+        public bool IsArchived { get; set; } = false;
 
         public List<Book> Books { get; set; } = [];
     }

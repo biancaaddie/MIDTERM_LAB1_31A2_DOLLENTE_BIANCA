@@ -14,5 +14,6 @@
         public string? AuthorProfileImageUrl { get; set; } = default!;
         public int TotalCopies { get; set; } = 0;
         public int AvailableCopies { get; set; } = 0;
+        public bool IsArchived { get; set; } = false;
     }
 }
