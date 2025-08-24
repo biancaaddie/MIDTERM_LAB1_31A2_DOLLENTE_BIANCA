@@ -21,7 +21,7 @@ public class BookService
             Name = "George Orwell",
             Biography = "English novelist, essayist, journalist and critic.",
             BirthDate = new DateTime(1903, 6, 25),
-            ProfileImageUrl = "https://example.com/orwell.jpg",
+            ProfileImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/George_Orwell_press_photo.jpg/960px-George_Orwell_press_photo.jpg",
             Books = new List<Book>()
         };
 
@@ -54,7 +54,7 @@ public class BookService
             Name = "J.K. Rowling",
             Biography = "British author, best known for the Harry Potter series.",
             BirthDate = new DateTime(1965, 7, 31),
-            ProfileImageUrl = "https://example.com/rowling.jpg",
+            ProfileImageUrl = "https://m.media-amazon.com/images/S/amzn-author-media-prod/8cigckin175jtpsk3gs361r4ss.jpg",
             Books = new List<Book>()
         };
 
@@ -90,7 +90,7 @@ public class BookService
                 Name = "Harper Lee",
                 Biography = "American novelist best known for To Kill a Mockingbird.",
                 BirthDate = new DateTime(1926, 4, 28),
-                ProfileImageUrl = "https://example.com/harper.jpg",
+                ProfileImageUrl = "https://hips.hearstapps.com/hmg-prod/images/gettyimages-50358657.jpg",
                 Books = new List<Book>()
             },
             Book = new Book
@@ -111,7 +111,7 @@ public class BookService
                 Name = "J.R.R. Tolkien",
                 Biography = "English writer, poet, philologist, and academic.",
                 BirthDate = new DateTime(1892, 1, 3),
-                ProfileImageUrl = "https://example.com/tolkien.jpg",
+                ProfileImageUrl = "https://upload.wikimedia.org/wikipedia/commons/d/d4/J._R._R._Tolkien%2C_ca._1925.jpg",
                 Books = new List<Book>()
             },
             Book = new Book
@@ -132,7 +132,7 @@ public class BookService
                 Name = "F. Scott Fitzgerald",
                 Biography = "American novelist and short story writer.",
                 BirthDate = new DateTime(1896, 9, 24),
-                ProfileImageUrl = "https://example.com/fitzgerald.jpg",
+                ProfileImageUrl = "https://media.gettyimages.com/id/514885548/photo/f-scott-fitzgerald.jpg?b=1&s=594x594&w=0&k=20&c=el_eb-mE_1P6viD_MZtZmpV94kJwsW5XWyTY6D7zOsc=",
                 Books = new List<Book>()
             },
             Book = new Book
@@ -153,7 +153,7 @@ public class BookService
                 Name = "Suzanne Collins",
                 Biography = "American television writer and author.",
                 BirthDate = new DateTime(1962, 8, 10),
-                ProfileImageUrl = "https://example.com/collins.jpg",
+                ProfileImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Suzanne_Collins_David_Shankbone_2010.jpg/250px-Suzanne_Collins_David_Shankbone_2010.jpg",
                 Books = new List<Book>()
             },
             Book = new Book
@@ -174,7 +174,7 @@ public class BookService
                 Name = "Mary Shelley",
                 Biography = "English novelist best known for Frankenstein.",
                 BirthDate = new DateTime(1797, 8, 30),
-                ProfileImageUrl = "https://example.com/shelley.jpg",
+                ProfileImageUrl = "https://fthmb.tqn.com/mS1HzPcix3CzwfMEV4e81DVCSbs%3d/1203x902/filters:fill(auto%2c1)/Mary-Shelley-171194034x-56aa23a43df78cf772ac879d.jpg",
                 Books = new List<Book>()
             },
             Book = new Book

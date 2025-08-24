@@ -1,17 +1,82 @@
-@model EditAuthorViewModel
+@model Library_Management.Models.EditAuthorViewModel
 
 @{
     ViewData["Title"] = "Edit Author";
 }
 
-<h2>Edit Author</h2>
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index">Authors</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Author</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
 
-<div class="row">
-    <div class="col-md-4">
-        @Html.Partial("_EditAuthorPartial", Model)
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="bi bi-pencil"></i> Edit Author
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="AuthorId" />
+                        <input type="hidden" asp-for="IsArchived" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Name" class="form-label"></label>
+                                    <input asp-for="Name" class="form-control" placeholder="Enter author's full name" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label asp-for="BirthDate" class="form-label"></label>
+                                    <input asp-for="BirthDate" class="form-control" type="date" />
+                                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label asp-for="ProfileImageUrl" class="form-label"></label>
+                                    <input asp-for="ProfileImageUrl" class="form-control" placeholder="https://example.com/author-photo.jpg" />
+                                    <span asp-validation-for="ProfileImageUrl" class="text-danger"></span>
+                                    <div class="form-text">Optional: URL to the author's profile photo</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Biography" class="form-label"></label>
+                                    <textarea asp-for="Biography" class="form-control" rows="8" 
+                                              placeholder="Enter a brief biography of the author..."></textarea>
+                                    <span asp-validation-for="Biography" class="text-danger"></span>
+                                    <div class="form-text">Optional: Brief description about the author</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex gap-3 justify-content-end mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Update Author
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
